@@ -1,0 +1,525 @@
+<template>
+    <div class="videoDemo" @mouseenter="mouseenter" @mouseleave="mouseleave" :style="{'width':videoW+'px','height':videoH+'px'}">
+        <!-- :style="{'width':width+'px','height':height+'px'}" -->
+        <div>
+            <video class="video" ref="video" @dblclick="toggleFullScreen">
+                <source :src="url" type="video/mp4" />
+                <!-- <div class="abc" style="position:absolute;z-index:99999999999999999999999;">afdfff</div> -->
+            </video>
+        </div>
+        <!-- 播放/暂停按钮 -->
+        <!-- <transition name="play">
+            <span class="play" ref="play" v-show="playShow" @click="play">play</span>
+        </transition> -->
+        <transition name="controlBar">
+            <div class="controlBar">
+                <!-- 播放/暂停按钮 -->
+                <span class="playBtn" @click="play" ref="playBtn">&gt;</span>
+                <!-- 音量 -->
+                <span class="volWrap" ref="volWrap">
+                    <span class="icon" @click="muted"></span>
+                   <div class="wrap" ref="lineWrap">
+                        <span class="line" ref="volume" :style="{'width':volumeWidth*volume+'px'}"></span>
+                        <span class="line2" @mousedown="mousedown('volume',$event)" ref="volume2" ></span>
+                   </div>
+                </span>
+                <!-- 目前播放时间 -->
+                <span class="curTime">{{formateTime(currentTime)}}</span>
+                <!-- 进度条 -->
+                <span class="progressBarWrap">
+                    <div class="wrap">
+                        <div class="line" ref="progress" :style="{'width':progressWidth*progress+'px'}"></div>
+                        <div class="line2" @mousedown="mousedown('progress',$event)" ref="progress2"></div>
+                    </div>
+                </span>
+                <!-- 总时长 -->
+                <span class="totalTime">{{formateTime(totalTime)}}</span>
+                <!-- 全屏 -->
+                <span class="fullScreen" @click="toggleFullScreen">
+                    [&nbsp;&nbsp;]
+                </span>
+            </div>
+        </transition>
+    </div>
+</template>
+
+<script>
+let video = {};
+const maxWidth = 640;
+
+export default {
+    name: "videoDemo",
+    data() {
+        return {
+            playShow: true,
+            isFullScreen: false,
+            widAndHei: {},
+            videoW: 0,
+            videoH: 0,
+            screenWAndH: {},
+            middleStyle: {},
+            volume: 1,
+            preVol: 1,
+            volumeWidth: 75,
+            progressWidth: 350,
+            progress: 0,
+            currentTime: 0,
+            totalTime: 0
+        }
+    },
+    computed: {
+      
+    },
+    props: {
+        
+        width: {
+            type: Number,
+            default: 640
+        },
+        height: {
+            type: Number,
+            default: 480
+        },
+        url: {
+            type: String,
+            default: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+        }
+       
+    },
+    methods: {
+        toggleFullScreen () {
+            if( !this.isFullScreen ) {
+                this.enterFullScreen();
+                this.isFullScreen = true;
+            } else {
+                this.exitFullScreen();
+                this.isFullScreen = false;
+            }
+           
+        },
+        setPlayInterVal () {
+            video.curTimeTimer = setInterval(() => {
+                this.currentTime = Math.round(video.currentTime);
+                this.progress = this.currentTime / this.totalTime;
+            },1000);
+        },
+        play () {
+           
+            if ( video.paused ) {
+                video.play();
+                // this.$refs.play.innerText = "pause";
+                this.$refs.playBtn.innerHTML = "||";
+                this.setPlayInterVal();
+            } else if (video.ended) {
+                video.currentTime = 0;
+                video.play();
+                this.$refs.playBtn.innerHTML = "||";
+                this.setPlayInterVal();
+            } else {
+                video.pause();
+                // this.$refs.play.innerText = "play";
+                this.$refs.playBtn.innerHTML = "&gt;";
+                clearInterval(video.curTimeTimer);
+            } 
+        },
+        mouseenter (event) {
+           
+            clearTimeout(video.outTimer);
+            this.playShow = true;
+        },  
+        mouseleave (event) {
+           
+            video.outTimer = setTimeout(() => {
+                this.playShow = false;
+            },1000)
+        },
+        enterFullScreen () {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            }
+            //FireFox
+            else if (video.mozRequestFullScreen) {
+                video.mozRequestFullScreen();
+            }
+            //Chrome等
+            else if (video.webkitRequestFullScreen) {
+                video.webkitRequestFullScreen();
+            }
+             //IE11
+            else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            } else {
+                this.videoW = this.screenWAndH.width;
+                this.videoH = this.screenWAndH.height;
+                console.log("else")
+            }
+
+            // this.videoW = this.screenWAndH.width;
+            // this.videoH = this.screenWAndH.height;
+
+          
+        },
+        exitFullScreen () {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+            else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            }
+            else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            }
+            else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else {
+                this.videoW = this.widAndHei.width
+                this.videoH = this.widAndHei.height
+            }
+
+            // this.videoW = this.widAndHei.width
+            // this.videoH = this.widAndHei.height
+
+        },
+        muted () {
+            if(this.volume) {
+                this.preVol = this.volume;
+                this.volume = 0;
+            } else {
+                this.volume = this.preVol;
+            }
+        },
+        getStyle(obj,attr) {
+            const result =  getComputedStyle ? getComputedStyle(obj)[attr] : obj.currentStyle[attr];
+          
+            return parseInt(result);
+        },
+        mousedown (type, event) {
+            // console.log("domw")
+            const dom = event.target;
+            dom.type = type;
+            dom.disX = dom.getBoundingClientRect().left;
+            dom.mx = event.clientX;
+            dom.domWidth = this.getStyle(dom, "width");
+           
+            dom.onmousemove = this.mousemove;
+            dom.onmouseup = this.mouseup;
+            dom.onmouseout = this.mouseup;
+
+            event.preventDefault();
+            return false;
+        },
+        mousemove (event) {
+            const dom = event.target;
+            dom.mx = event.clientX;
+
+            this.toggleBar(dom);
+            
+            event.preventDefault();
+            return false;
+        },
+        mouseup (event) {
+            const dom = event.target;
+
+            this.toggleBar(dom);
+            this.currentTime = video.currentTime;
+            
+            dom.onmousemove = null;
+            dom.onmouseup = null;
+        },
+        toggleBar (dom) {
+            let width = dom.mx - dom.disX;
+
+            if (dom.type === 'volume') {
+                if(width > this.volumeWidth) {
+                    width = this.volumeWidth;
+                } else if (width < 0) {
+                    width = 0;
+                } else {
+                    width = dom.mx - dom.disX;
+                }
+                video.volume = width / this.volumeWidth;
+                this.volume = video.volume;
+            } else if (dom.type === 'progress') {
+                if(width > this.progressWidth) {
+                    width = this.progressWidth;
+                } else if (width < 0) {
+                    width = 0;
+                } else {
+                    width = dom.mx - dom.disX;
+                }
+                
+                this.progress = width / this.progressWidth;
+                video.currentTime = this.progress * this.totalTime;
+            }
+
+        },
+        transfer (value) {
+            value += "";
+            if (value.length < 2) {
+                value = "0" + value;
+                return value;
+            } else {
+                return value;
+            }
+        },
+        formateTime (time) {
+            const hour = this.transfer(Math.floor(time / 3600));
+            const minute = this.transfer(Math.floor((time % 3600) / 60));
+            const second = this.transfer(Math.round(time % 60));
+            return `${hour}:${minute}:${second}`
+        }
+    },
+    mounted() {
+        
+       this.$nextTick ( () => {
+            video = this.$refs.video;
+            video.addEventListener("loadedmetadata", () => {
+                
+               
+                if (video.videoWidth > maxWidth) {
+                     this.videoW = maxWidth;
+                     this.videoH = maxWidth / video.videoWidth * video.videoHeight;
+                } else {
+                    this.videoW = video.videoWidth;
+                    this.videoH = video.videoHeight;
+                }
+
+                this.totalTime = video.duration;
+                this.currentTime = Math.round(video.currentTime);
+                
+                
+                this.volume = video.volume;
+                this.volumeWidth = this.getStyle(this.$refs.volume2, "width");
+                this.progressWidth = this.getStyle(this.$refs.progress2, "width");
+               
+                
+                this.widAndHei.width =  this.videoW;
+                this.widAndHei.height = this.videoH;
+
+                this.screenWAndH.width = document.documentElement.clientWidth;
+                this.screenWAndH.height = document.documentElement.clientHeight;
+               
+            });
+
+            video.addEventListener("ended", () => {
+                // console.log("end")
+                this.$refs.playBtn.innerHTML = "O";
+                clearInterval(video.curTimeTimer);
+            })
+            
+
+       } )
+    },
+    filters: {
+        // formateTime (time) {
+        //     const hour = this.transfer(Math.floor(time / 3600));
+        //     const minute = this.transfer(Math.floor((time % 3600) / 60));
+        //     const second = this.transfer((time % 60));
+        //     return `${hour}:${minute}:${second}`
+        // }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+// 消除全屏下的控制条
+// video::-webkit-media-controls,
+// video::-moz-media-controls,
+// video::-webkit-media-controls-enclosure{
+//     display:none !important;
+// }
+
+// video::-webkit-media-controls-panel,
+// video::-webkit-media-controls-panel-container,
+// video::-webkit-media-controls-start-playback-button {
+//     display:none !important;
+//     -webkit-appearance: none;
+// }
+
+// pseudo="-internal-media-controls-overlay-play-button-internal" 原生居中的播放按钮
+// pseudo="-internal-media-controls-button-panel"   原生底部控制条
+// pseudo="-internal-media-controls-segmented-track" 原生进度条
+// [pseudo] {
+//     display: none !important;
+// }
+
+audio::-webkit-media-controls,
+video::-webkit-media-controls {
+    display: none !important;
+}
+
+.videoDemo {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 21474836470 !important;
+
+    .video {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99 !important;
+
+        &:-webkit-full-screen {
+            z-index: 99 !important;
+        }
+    }
+
+    .play {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        color: #fff;
+        line-height: 50px;
+        text-align: center;
+        font-size: 30px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ccc;
+        cursor: pointer;
+    }
+
+    .controlBar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 21474836470 !important;
+        width: 100%;
+        height: 50px;
+        font-size: 0;
+        background: rgba($color: #ccc, $alpha: 0.5);
+        &:-webkit-full-screen {
+            z-index: 21474836470 !important;
+        }
+        & > span {
+            display: inline-block;
+            height: 50px;
+            line-height: 50px;
+            vertical-align: middle;
+        }
+        .playBtn {
+            width: 50px;
+            text-align: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .volWrap {
+            width: 100px;
+            height: 50px;
+            position: relative;
+            // line-height: 1;
+            .wrap {
+                position: absolute;
+                left: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                // display: inline-block;
+                width: 75px;
+                height: 5px;
+                border-radius: 2.5px;
+                background-color: rgba($color: #ccc, $alpha: 0.75);
+                z-index: 8;
+            }
+
+            .line,
+            .line2 {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 5px;
+                border-radius: 2.5px;
+            }
+            .line {
+                background-color: #fff;
+                z-index: 9;
+            }
+            .line2 {
+                background-color: transparent;
+                z-index: 10;
+            }
+
+            .icon {
+                display: inline-block;
+                width: 15px;
+                height: 15px;
+                border-radius: 50%;
+                background-color: #fff;
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+        .curTime,
+        .totalTime,
+        .fullScreen {
+            font-size: 12px;
+            color: #666;
+            width: 50px;
+            text-align: center;
+        
+        }
+
+        .progressBarWrap {
+            width: 350px;
+            position: relative;
+            .wrap {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 350px;
+                height: 5px;
+                border-radius: 2.5px;
+                background-color: rgba($color: #ccc, $alpha: 0.75);
+                z-index: 8;
+
+                .line,
+                .line2 {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 5px;
+                    border-radius: 2.5px;
+                }
+                 .line {
+                    background-color: #fff;
+                    z-index: 9;
+                }
+                .line2 {
+                    background-color: transparent;
+                    z-index: 10;
+                }
+            }
+        }
+
+        .fullScreen {
+            width: 30px;
+            cursor: pointer;
+        }
+    }
+}
+
+.play-enter,
+.play-leave-to,
+.controlBar-enter,
+.controlBar-leave-to {
+    opacity: 0;
+}
+
+.play-enter-active,
+.play-leave-active,
+.controlBar-enter-active,
+.controlBar-leave-active {
+    transition: 1s;
+}
+</style>
