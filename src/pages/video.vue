@@ -1,10 +1,9 @@
 <template>
-    <div class="videoDemo" @mouseenter="mouseenter" @mouseleave="mouseleave" :style="{'width':videoW+'px','height':videoH+'px'}">
-        <!-- :style="{'width':width+'px','height':height+'px'}" -->
+    <div class="videoDemo" @mouseenter="mouseenter" @mouseleave="mouseleave" :style="{'width':videoW+'px','height':videoH+'px'}" ref="parentWrap">
+       
         <div>
-            <video class="video" ref="video" @dblclick="toggleFullScreen">
+            <video class="video" preload ref="video" @dblclick="toggleFullScreen">
                 <source :src="url" type="video/mp4" />
-                <!-- <div class="abc" style="position:absolute;z-index:99999999999999999999999;">afdfff</div> -->
             </video>
         </div>
         <!-- 播放/暂停按钮 -->
@@ -44,6 +43,7 @@
 </template>
 
 <script>
+import JudgeBrower from "@/utils/judgeBrower"
 let video = {};
 const maxWidth = 640;
 
@@ -135,27 +135,31 @@ export default {
         },
         enterFullScreen () {
             if (video.requestFullscreen) {
-                video.requestFullscreen();
+                // video.requestFullscreen();
+                this.$refs.parentWrap.requestFullscreen();
             }
             //FireFox
             else if (video.mozRequestFullScreen) {
-                video.mozRequestFullScreen();
+                // video.mozRequestFullScreen();
+                this.$refs.parentWrap.mozRequestFullScreen();
             }
             //Chrome等
             else if (video.webkitRequestFullScreen) {
-                video.webkitRequestFullScreen();
+                // video.webkitRequestFullScreen();
+                this.$refs.parentWrap.webkitRequestFullScreen();
             }
              //IE11
             else if (video.msRequestFullscreen) {
-                video.msRequestFullscreen();
+                // video.msRequestFullscreen();
+                this.$refs.parentWrap.msRequestFullscreen();
             } else {
                 this.videoW = this.screenWAndH.width;
                 this.videoH = this.screenWAndH.height;
                 console.log("else")
             }
 
-            // this.videoW = this.screenWAndH.width;
-            // this.videoH = this.screenWAndH.height;
+            this.videoW = this.screenWAndH.width;
+            this.videoH = this.screenWAndH.height;
 
           
         },
@@ -176,8 +180,8 @@ export default {
                 this.videoH = this.widAndHei.height
             }
 
-            // this.videoW = this.widAndHei.width
-            // this.videoH = this.widAndHei.height
+            this.videoW = this.widAndHei.width
+            this.videoH = this.widAndHei.height
 
         },
         muted () {
@@ -194,7 +198,7 @@ export default {
             return parseInt(result);
         },
         mousedown (type, event) {
-            // console.log("domw")
+          
             const dom = event.target;
             dom.type = type;
             dom.disX = dom.getBoundingClientRect().left;
@@ -203,7 +207,7 @@ export default {
            
             dom.onmousemove = this.mousemove;
             dom.onmouseup = this.mouseup;
-            dom.onmouseout = this.mouseup;
+            dom.onmouseout = this.mouseout;
 
             event.preventDefault();
             return false;
@@ -222,6 +226,15 @@ export default {
 
             this.toggleBar(dom);
             this.currentTime = video.currentTime;
+            
+            dom.onmousemove = null;
+            dom.onmouseup = null;
+        },
+         mouseout (event) {
+            const dom = event.target;
+
+            // this.toggleBar(dom);
+            // this.currentTime = video.currentTime;
             
             dom.onmousemove = null;
             dom.onmouseup = null;
@@ -296,9 +309,21 @@ export default {
                 this.widAndHei.width =  this.videoW;
                 this.widAndHei.height = this.videoH;
 
-                this.screenWAndH.width = document.documentElement.clientWidth;
-                this.screenWAndH.height = document.documentElement.clientHeight;
-               
+                const browerVer = JudgeBrower();
+                
+                if( browerVer.indexOf("IE") >= 0 && parseInt(browerVer.slice(2)) <= 10 ) {
+                    this.screenWAndH.width = document.documentElement.clientWidth;
+                    this.screenWAndH.height = document.documentElement.clientHeight;
+                   
+                } else {
+                    this.screenWAndH.width = window.screen.width;
+                    this.screenWAndH.height = window.screen.height;
+                }
+
+                // setInterval(() => {
+                //     console.log(video.buffered);
+                // }, 1000);
+
             });
 
             video.addEventListener("ended", () => {
@@ -309,14 +334,6 @@ export default {
             
 
        } )
-    },
-    filters: {
-        // formateTime (time) {
-        //     const hour = this.transfer(Math.floor(time / 3600));
-        //     const minute = this.transfer(Math.floor((time % 3600) / 60));
-        //     const second = this.transfer((time % 60));
-        //     return `${hour}:${minute}:${second}`
-        // }
     }
 }
 </script>
