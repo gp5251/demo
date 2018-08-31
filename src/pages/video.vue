@@ -2,7 +2,8 @@
     <div class="videoDemo" @mouseenter="mouseenter" @mouseleave="mouseleave" :style="{'width':videoW+'px','height':videoH+'px'}" ref="parentWrap">
        
         <div>
-            <video class="video" preload ref="video" @dblclick="toggleFullScreen">
+            <video class="video" preload ref="video" @dblclick="toggleFullScreen"
+            poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQF6rUUUaRZ4L0-vghdGpmKcrABj8gfF1t4HG4yWMX1997jTMdlHg">
                 <source :src="url" type="video/mp4" />
             </video>
         </div>
@@ -54,8 +55,8 @@ export default {
             playShow: true,
             isFullScreen: false,
             widAndHei: {},
-            videoW: 0,
-            videoH: 0,
+            videoW: 640,
+            videoH: 480,
             screenWAndH: {},
             middleStyle: {},
             volume: 1,
@@ -64,7 +65,8 @@ export default {
             progressWidth: 350,
             progress: 0,
             currentTime: 0,
-            totalTime: 0
+            totalTime: 0,
+            isend: false
         }
     },
     computed: {
@@ -89,9 +91,22 @@ export default {
     methods: {
         toggleFullScreen () {
             if( !this.isFullScreen ) {
+                 // 全屏下时按下esc键会被浏览器屏蔽， 所以用此方法处理按下esc键的情况
+                
+                window.onresize = () => {
+                    if ( this.isFullScreen ) {
+                        this.exitFullScreen();
+                        this.isFullScreen = false;
+                    }
+                }
+                    
                 this.enterFullScreen();
-                this.isFullScreen = true;
+                // 延迟设置，防止onresize立即执行
+                setTimeout(() => {
+                    this.isFullScreen = true;
+                }, 200);
             } else {
+                window.onresize = null;
                 this.exitFullScreen();
                 this.isFullScreen = false;
             }
@@ -107,15 +122,26 @@ export default {
            
             if ( video.paused ) {
                 video.play();
+               
+                this.isend = false;
+
                 // this.$refs.play.innerText = "pause";
-                this.$refs.playBtn.innerHTML = "||";
+                this.$refs.playBtn.innerHTML = "| |";
                 this.setPlayInterVal();
-            } else if (video.ended) {
-                video.currentTime = 0;
-                video.play();
-                this.$refs.playBtn.innerHTML = "||";
-                this.setPlayInterVal();
-            } else {
+            } 
+            // 虽然 video.ended 在播放完后为true 但是就是不进这个判断
+            // console.log(video.ended);
+            // else if (video.ended) {
+            //     console.log("ended");
+            //     video.currentTime = 0;
+            //     video.play();
+            //     this.$refs.playBtn.innerHTML = "| |";
+            //     this.isend = false;
+            //     console.log("video.ended")
+            //     this.setPlayInterVal();
+            // } 
+            else {
+                
                 video.pause();
                 // this.$refs.play.innerText = "play";
                 this.$refs.playBtn.innerHTML = "&gt;";
@@ -123,17 +149,17 @@ export default {
             } 
         },
         mouseenter (event) {
-           
             clearTimeout(video.outTimer);
             this.playShow = true;
         },  
         mouseleave (event) {
-           
             video.outTimer = setTimeout(() => {
                 this.playShow = false;
             },1000)
         },
+       
         enterFullScreen () {
+           
             if (video.requestFullscreen) {
                 // video.requestFullscreen();
                 this.$refs.parentWrap.requestFullscreen();
@@ -152,18 +178,19 @@ export default {
             else if (video.msRequestFullscreen) {
                 // video.msRequestFullscreen();
                 this.$refs.parentWrap.msRequestFullscreen();
-            } else {
-                this.videoW = this.screenWAndH.width;
-                this.videoH = this.screenWAndH.height;
-                console.log("else")
-            }
+            } 
+            // else {
+            //     this.videoW = this.screenWAndH.width;
+            //     this.videoH = this.screenWAndH.height;
+            // }
 
             this.videoW = this.screenWAndH.width;
             this.videoH = this.screenWAndH.height;
 
-          
+            
         },
         exitFullScreen () {
+            
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             }
@@ -175,10 +202,11 @@ export default {
             }
             else if (document.msExitFullscreen) {
                 document.msExitFullscreen();
-            } else {
-                this.videoW = this.widAndHei.width
-                this.videoH = this.widAndHei.height
-            }
+            } 
+            // else {
+            //     this.videoW = this.widAndHei.width
+            //     this.videoH = this.widAndHei.height
+            // }
 
             this.videoW = this.widAndHei.width
             this.videoH = this.widAndHei.height
@@ -194,7 +222,6 @@ export default {
         },
         getStyle(obj,attr) {
             const result =  getComputedStyle ? getComputedStyle(obj)[attr] : obj.currentStyle[attr];
-          
             return parseInt(result);
         },
         mousedown (type, event) {
@@ -203,7 +230,6 @@ export default {
             dom.type = type;
             dom.disX = dom.getBoundingClientRect().left;
             dom.mx = event.clientX;
-            dom.domWidth = this.getStyle(dom, "width");
            
             dom.onmousemove = this.mousemove;
             dom.onmouseup = this.mouseup;
@@ -229,6 +255,12 @@ export default {
             
             dom.onmousemove = null;
             dom.onmouseup = null;
+            dom.onmouseout = null;
+
+            if (this.isend) {
+                this.$refs.playBtn.innerHTML = "&gt;";
+                this.isend = false;
+            }
         },
          mouseout (event) {
             const dom = event.target;
@@ -238,6 +270,7 @@ export default {
             
             dom.onmousemove = null;
             dom.onmouseup = null;
+            dom.onmouseout = null;
         },
         toggleBar (dom) {
             let width = dom.mx - dom.disX;
@@ -286,8 +319,8 @@ export default {
         
        this.$nextTick ( () => {
             video = this.$refs.video;
+            // 当获取到视频长度时
             video.addEventListener("loadedmetadata", () => {
-                
                
                 if (video.videoWidth > maxWidth) {
                      this.videoW = maxWidth;
@@ -319,18 +352,17 @@ export default {
                     this.screenWAndH.width = window.screen.width;
                     this.screenWAndH.height = window.screen.height;
                 }
-
-                // setInterval(() => {
-                //     console.log(video.buffered);
-                // }, 1000);
+                
 
             });
-
+            // 当播放完时
             video.addEventListener("ended", () => {
-                // console.log("end")
+               
+                this.isend = true;
                 this.$refs.playBtn.innerHTML = "O";
                 clearInterval(video.curTimeTimer);
-            })
+            });
+            
             
 
        } )
@@ -370,7 +402,7 @@ video::-webkit-media-controls {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 21474836470 !important;
+    // z-index: 21474836470 !important;
 
     .video {
         position: absolute;
@@ -378,11 +410,11 @@ video::-webkit-media-controls {
         top: 0;
         width: 100%;
         height: 100%;
-        z-index: 99 !important;
+        // z-index: 99 !important;
 
-        &:-webkit-full-screen {
-            z-index: 99 !important;
-        }
+        // &:-webkit-full-screen {
+        //     z-index: 99 !important;
+        // }
     }
 
     .play {
@@ -405,14 +437,14 @@ video::-webkit-media-controls {
         position: absolute;
         bottom: 0;
         left: 0;
-        z-index: 21474836470 !important;
+        // z-index: 21474836470 !important;
         width: 100%;
         height: 50px;
         font-size: 0;
         background: rgba($color: #ccc, $alpha: 0.5);
-        &:-webkit-full-screen {
-            z-index: 21474836470 !important;
-        }
+        // &:-webkit-full-screen {
+        //     // z-index: 21474836470 !important;
+        // }
         & > span {
             display: inline-block;
             height: 50px;
