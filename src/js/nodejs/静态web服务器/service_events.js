@@ -37,18 +37,14 @@ http.createServer((req, res) => {
         } else {
             const mine = path.extname(pathname)
             const emitter = new events.EventEmitter()
+            getMine(mine, emitter)
             emitter.on("data", mineName => {
                 res.writeHead(200, "ok", {"Content-Type":mineName + ";charset='utf-8'"})
                 res.write(data)
                 res.end()
             })
-            getMine(mine, emitter)
             
         }
     })
     
-    
-
-    
-
 }).listen(8088, "localhost")

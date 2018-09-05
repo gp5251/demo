@@ -1,49 +1,57 @@
 const MongoClient = require("mongodb").MongoClient
-const assert = require("assert")
 
 const DBurl = "mongodb://127.0.0.1:27017"
+const DBName = "mydb"
 
-
-MongoClient.connect(DBurl, (err, db) => {
+MongoClient.connect(DBurl, (err, client) => {
     if (err) {
         console.log(err)
-        return
+        return 
     }
-    // console.log(db.db("mydb"))
-    const database = db.db("mydb")
-    database.collection("users").insertOne({
-        "name": "mingming",
-        "age": 20,
-        "sex": "female"
-    }, (err, data) => {
-        if (err) {
-            console.log(err)
-            return
-        }
 
-        // console.log(data)
-    })
-   
-    const cursor = database.collection("users").find({}, {"_id":0})
-    // while(cursor.hasNext()) {
-    //     console.log(cursor.next())
-    //     cursor.next().then(data => {
-    //         console.log(data)
-    //     })
-    // }
+    const db = client.db(DBName)
+    try {
+        // db.collection("users").insertMany([
+        //     {
+        //         "name": "aaa",
+        //         "age": 19,
+        //         "sex": "male"
+        //     },
+        //     {
+        //         "name": "bbb",
+        //         "age": 19,
+        //         "sex": "female"
+        //     },
+        //     {
+        //         "name": "ccc",
+        //         "age": 19,
+        //         "sex": "male"
+        //     }
+        // ])
+        // console.log("插入成功")
 
-    const arr = cursor.toArray((err, data) => {
-        console.log(data)
-    })
-    
-    // cursor.each((err, doc) => {
-    //     if (doc !== null) {
-    //         console.log(doc)
-    //     }
-    // })
-    // console.log(arr[0])
-    // arr.forEach(element => {
-    //     console.log(element.name)
-    // });
-    db.close()
+        const cursor = db.collection("users").find()
+        // 遍历方法
+        let i = 0
+        cursor.each((err, item) => {
+            console.log(i++)
+            console.log(item)  // 一个一个返回 最后返回一个null
+        })
+
+        // let i = 0
+        // cursor.toArray((err, item) => {
+        //     console.log(i++)
+        //     console.log(item) // 返回了一个数组
+        // })
+        cursor.count((err, count) => {
+            console.log(count)
+        })
+
+    } catch(err) {
+        console.log(err)
+        
+    } finally {
+        client.close()
+    }
+
 })

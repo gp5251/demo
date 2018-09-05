@@ -102,7 +102,7 @@ const fs = require('fs')
 // })
 
 const readStream =  fs.createReadStream(__dirname  + "/" + "2.txt")
-const  writeStream = fs.createWriteStream(__dirname +  "/" +  "5.txt", {flags:"a"});
+const writeStream = fs.createWriteStream(__dirname +  "/" +  "5.txt", {flags:"a"});
 
 // console.log(writeStream)
 readStream.on("data", data => {
