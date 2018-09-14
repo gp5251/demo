@@ -13,7 +13,9 @@ export default new VueRouter({
 	   {
 	   	 	path: '/jsonp',
 	   	 	name: 'jsonp',
-	   	 	component: Jsonp
+            component: Jsonp,
+            meta: "jsonp"
+                
 	   },
 	   {
 	   	 	path: '/axios',

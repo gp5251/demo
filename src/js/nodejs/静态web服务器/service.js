@@ -9,7 +9,7 @@ http.createServer((req, res) => {
     if(req.url  === "/favicon.ico") return
     // 把URL 转换为对象
     console.log(url.parse(req.url,  true))
-    console.log(url.parse("http://abc.com?sex=male#abc"))
+    console.log(url.parse("http://www.abc.com?sex=male&age=20#abc"))
      // 把对象 转换为对URL
     console.log(url.format(req.url))
     

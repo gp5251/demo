@@ -43,8 +43,16 @@ export default {
 			param: "callback"
 		}).then(res => {
 			console.log(res);
-		})
-	}
+        })
+        
+        this.$router.push({name: "jsonp", query:{"name": "tom"}})
+    },
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            console.log(to.meta, from.meta)
+        })
+    }
+
 }
 </script>
 

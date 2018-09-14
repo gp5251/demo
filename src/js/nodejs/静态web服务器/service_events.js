@@ -17,11 +17,12 @@ http.createServer((req, res) => {
         pathname = "index.html"
     }
 
-    console.log("访问" + pathname)
+    // console.log("访问" + pathname)
 
-    fs.readFile(`${__dirname}/static/${pathname}`, (err, data) => {
+    fs.readFile(`${__dirname}/static${pathname}`, (err, data) => {
+        console.log(`${__dirname}/static${pathname}`)
         if (err) {
-            // console.log(`找不到${__dirname}/static/${pathname}`)
+            
             fs.readFile(`${__dirname}/static/404.html`, (err, data) => {
                
                 if(err) {
