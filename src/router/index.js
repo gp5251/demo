@@ -5,6 +5,7 @@ import Jsonp from '@/pages/jsonp'
 import axios from '@/pages/axios'
 import video from '@/pages/video'
 import nodejs from "@/pages/nodejs.vue"
+import test from "@/pages/test"
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,11 @@ export default new VueRouter({
             path: "/nodejs",
             name: "nodejs",
             component: nodejs
+        },
+        {
+            path: "/test",
+            name: "test",
+            component: test
         }
   ]
 })
