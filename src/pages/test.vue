@@ -9,6 +9,8 @@
 
 import addParams from "@/utils/addParams"
 import deepClone from "@/utils/deepClone"
+import jsonp from "@/utils/jsonp"
+import need from "@/utils/need"
 
 export default {
     name: "test",
@@ -24,16 +26,31 @@ export default {
         // console.log(a)
         // console.log(b)
 
-        let arr1 = [
-            "a",
-            {b: 3}
-        ]
+        // let arr1 = [
+        //     "a",
+        //     {b: 3}
+        // ]
 
-        let arr2 = deepClone(arr1)
-        // let arr2 = arr1
-        arr2[1].b= 8
-        console.log(arr1)
-        console.log(arr2)
+        // let arr2 = deepClone(arr1)
+        // // let arr2 = arr1
+        // arr2[1].b= 8
+        // console.log(arr1)
+        // console.log(arr2)
+        console.log("hahah")
+        const url = "https://open-anzhuang-betaa.djtest.cn/index/getDemandDetail"
+        const data = {
+            demandStatus: 5,
+            pageNum: 1,
+            countEachPage: 10
+        }
+
+        jsonp(url, data).then(res => {
+            console.log(res)
+        })
+
+        need("https://static.daojia.com/bi/buried_point/js/tracker.js", function () {
+            console.log("need success")
+        })
 
     }
 }
