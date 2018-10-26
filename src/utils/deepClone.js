@@ -17,15 +17,13 @@
 // }
 
 export default function deepClone (obj) {
-    if (typeof obj === "object") {
+    if (obj instanceof Object) {
 
-        let result 
-
-        obj instanceof Array ? result = [] : result = {}
+        let result = obj instanceof Array ? [] : {}
 
         for (let key in obj) {
 
-            typeof obj[key] === "object" ? result[key] = deepClone(obj[key]) : result[key] = obj[key]
+            result[key] = obj[key] instanceof Object ? deepClone(obj[key]) : obj[key]
 
         }
 

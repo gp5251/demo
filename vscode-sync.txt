@@ -1,0 +1,2 @@
+github token: 55f944fd6ac4f81ee8cf0eef58b27fd16011bb4e
+sync.gist: "48fb5f21740b20579bb602d5d330f419"

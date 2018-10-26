@@ -11,6 +11,8 @@ import addParams from "@/utils/addParams"
 import deepClone from "@/utils/deepClone"
 import jsonp from "@/utils/jsonp"
 import need from "@/utils/need"
+import queryString from "@/utils/queryString"
+import setRem from "@/utils/setRem"
 
 export default {
     name: "test",
@@ -51,6 +53,8 @@ export default {
         need("https://static.daojia.com/bi/buried_point/js/tracker.js", function () {
             console.log("need success")
         })
+
+        setRem ()
 
     }
 }
