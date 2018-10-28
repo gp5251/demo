@@ -1,21 +1,33 @@
 <template>
     <div class="test">
 
+        <button @click="showToast">showToast</button>
 
     </div>
 </template>
 
 <script>
 
+import Vue from "vue"
 import addParams from "@/utils/addParams"
 import deepClone from "@/utils/deepClone"
 import jsonp from "@/utils/jsonp"
 import need from "@/utils/need"
 import queryString from "@/utils/queryString"
 import setRem from "@/utils/setRem"
+import Toast from "@/plugins/toast"
+
+Vue.use(Toast)
 
 export default {
     name: "test",
+    methods: {
+        showToast () {
+            this.$toast({
+                message: "hello"
+            })
+        }
+    },
     mounted () {
         // console.log(addParams("www.aaa.com?c=3", {a:2,b:9}))
         // let a = {
@@ -54,7 +66,9 @@ export default {
             console.log("need success")
         })
 
-        setRem ()
+        // setRem ()
+
+        
 
     }
 }
