@@ -12,7 +12,7 @@ export default function queryString (url) {
 
     }
     
-    const reg = /&?(\w+)=([^&]+)(?:$|&)/ig
+    const reg = /&?(\w+)=([^&#]+)(?:$|&|#)/ig
 
     while (reg.test(searchString)) {
 

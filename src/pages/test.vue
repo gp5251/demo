@@ -2,6 +2,7 @@
     <div class="test">
 
         <button @click="showToast">showToast</button>
+        <button @click="showloading">showloading</button>
 
     </div>
 </template>
@@ -16,8 +17,12 @@ import need from "@/utils/need"
 import queryString from "@/utils/queryString"
 import setRem from "@/utils/setRem"
 import Toast from "@/plugins/toast"
+import loading from "@/plugins/loading"
+import request from "@/plugins/request"
 
 Vue.use(Toast)
+Vue.use(loading)
+Vue.use(request)
 
 export default {
     name: "test",
@@ -26,6 +31,13 @@ export default {
             this.$toast({
                 message: "hello"
             })
+        },
+        showloading () {
+            const loading = this.$loading()
+            setTimeout(() => {
+                loading.close()
+                console.log("timeout")
+            }, 3000);
         }
     },
     mounted () {
@@ -68,7 +80,11 @@ export default {
 
         // setRem ()
 
-        
+        this.$request({
+            url: "https://plugins.kancloud.cn/api/plugin/info?name=theme-default,highlight"
+        }).then(res => {
+            console.log(res)
+        })
 
     }
 }

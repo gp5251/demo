@@ -1,0 +1,29 @@
+.vue-loading {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    .loading {
+        // transition: .5s;
+        // animation: loadingAnimation .5s linear alternate;
+        width: 100px;
+        padding: 50px;
+        line-height: 1.5;
+        text-align: center;
+        background-color: rgba($color: #000000, $alpha: .75);
+        border-radius: 10px;
+        color: #fff;
+        font-size: 20px;
+    }
+}
+
+@keyframes loadingAnimation {
+    0% {
+        transform: scale(.5)
+    }
+
+    50% {
+        transform: scale(1.5)
+    }
+}
