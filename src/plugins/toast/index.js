@@ -1,52 +1,52 @@
-import component from './component'
-import './style.css'
+import options from "./component"
+import Vue from "vue"
+const ToastConstructor = Vue.extend(options)
 
 
-var toast = {};
+let canShow = true
 
-toast.install = (Vue) => {
+function Toast (option) {
+    if (!canShow) {
+        return
+    }
 
-	Vue.prototype.toast = (message, options={duration:2000}) => {
+    const instance = new ToastConstructor().$mount()
 
-		const toastClass =  Vue.extend(component);
-		
-		const vm = new toastClass().$mount();
+    canShow = false
 
-		if(vm.isExist) {
-			return;
-		}
+    instance.message = option.message
 
-		vm.isExist = true;
+    const el = instance.$el
+    
+    document.body.appendChild ( el )
 
-		vm.message = message;
+    const timeout = option.timeout || 2000
+    
+    setTimeout(() => {
 
-		vm.isShow = true;
+        instance.visible = true
 
-		const el = vm.$el;
+        clearTimeout(instance.timer)
 
-		document.body.appendChild(el);
-		
-		if (options.position) {
-			setPos(vm, options.position[0], options.position[1]);
-		}
+        instance.timer = setTimeout(() => {  
 
-		setTimeout(() => {
-			vm.isShow = false;
-			vm.isExist = false;
-			init(el);
-		},options.duration);
+            instance.visible = false
+            canShow = true
+            el.addEventListener("transitionend", function close () {
+                document.body.removeChild ( el )
+            })
 
-	}
+        }, timeout);
 
-	function init(el) {
-		el.addEventListener('transitionend',() => document.body.removeChild(el))
-	}
-
-	function setPos(vm,x,y) {
-		const clazz = x + y.slice(0,1).toUpperCase() + y.slice(1);
-		vm.changeClass = clazz;
-
-	}
+    }, 0);
+   
 }
 
-export default toast;
+
+
+export default {
+    install () {
+        Vue.Toast = Toast
+        Vue.prototype.$toast = Toast
+    }
+}

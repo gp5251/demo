@@ -1,2 +1,14 @@
+<<<<<<< HEAD
 GitHub Token: daddf1ac977ba354dcd8666ee7e6cf8c2f66a668
 GitHub Gist: a07c2b6ad0ff99b90626b0f4fe367340
+=======
+
+
+
+
+
+
+
+github token: 55f944fd6ac4f81ee8cf0eef58b27fd16011bb4e
+sync.gist: "48fb5f21740b20579bb602d5d330f419"
+>>>>>>> f26e41675f99736d29de74411f25e0ebeb187269
