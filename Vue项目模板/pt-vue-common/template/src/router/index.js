@@ -23,6 +23,10 @@ const routers = {
       path: '/kar',
       name: 'Kar',
       component: Kar
+    },
+    { 
+      path: '*', 
+      redirect: '/' 
     }
   ]
 }
