@@ -6,6 +6,7 @@ import axios from '@/pages/axios'
 import video from '@/pages/video'
 import nodejs from "@/pages/nodejs.vue"
 import test from "@/pages/test"
+import scrollWraper from "@/pages/scroll"
 
 Vue.use(VueRouter)
 
@@ -37,6 +38,11 @@ export default new VueRouter({
             path: "/test",
             name: "test",
             component: test
+        },
+        {
+            path: "/scrollWraper",
+            name: "scrollWraper",
+            component: scrollWraper
         }
   ]
 })
