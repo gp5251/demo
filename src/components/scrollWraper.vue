@@ -12,11 +12,7 @@ export default {
             bs: null
         }
     },
-    props: {
-        items: {
-            type: Array
-        }
-    },
+    props: ["flag"],
     
     mounted () {
         this.$nextTick(() => {
@@ -26,7 +22,7 @@ export default {
         })
     },
     watch: {
-        items () {
+        flag () {
             this.bs.refresh()
         }
     }
@@ -37,24 +33,5 @@ export default {
 .wraper {
     width: 100%;
     overflow: hidden;
-
-    // .content {
-    //     &::after {
-    //         content: "";
-    //         display: table;
-    //         clear: both;
-    //     }
-    //     // width: auto;
-    //     padding: 0;
-    //     height: 300px;
-    //     .item {
-    //         // display: inline-block;
-    //         float: left;
-    //         list-style: none;
-    //         width: 400px;
-    //         // margin: 0 20px;
-    //         background: orange;
-    //     } 
-    // }
 }
 </style>

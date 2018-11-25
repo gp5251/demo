@@ -1,9 +1,11 @@
 <template>
-    <wraper :items="items">
-        <ul class="content" :style="{'width': contentWidth}">
-            <li class="item" v-for="(item, index) in items" :key="index">{{ item }}</li>
-        </ul>
-    </wraper>
+    <div class="outer" ref="outer">
+        <wraper :flag="flag">
+            <ul class="content" :style="{'width': contentWidth}">
+                <li class="item" v-for="(item, index) in items" :key="index" :style="{width: itemWidth + 'px'}">{{ item }}</li>
+            </ul>
+        </wraper>
+    </div>
 
 </template>
 
@@ -12,12 +14,14 @@ import wraper from "@/components/scrollWraper"
 export default {
     data() {
         return {
-            items: []
+            items: [],
+            flag: 0,
+            itemWidth: 0
         }
     },
      computed: {
         contentWidth () {
-            return this.items.length * 400 + "px"
+            return this.items.length * (this.itemWidth + 20) + "px"
         }
     },
     components: {
@@ -26,7 +30,10 @@ export default {
     mounted() {
         setTimeout(() => {
             this.items = ["aaa", "bbb", "ccc", "ddd", "eeee"]
+            this.flag++
         }, 2000);
+        this.itemWidth = this.$refs.outer.clientWidth * .3
+        console.log(this.itemWidth)
     }
 }
 </script>
@@ -52,7 +59,7 @@ export default {
             float: left;
             list-style: none;
             width: 400px;
-            // margin: 0 20px;
+            margin-right: 20px;
             background: orange;
         } 
     }

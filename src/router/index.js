@@ -25,9 +25,9 @@ export default new VueRouter({
 	   	 	component: axios
        },
        {
-        path: '/video',
-        name: 'video',
-        component: video
+            path: '/video',
+            name: 'video',
+            component: video
         },
         {
             path: "/nodejs",
