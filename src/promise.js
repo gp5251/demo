@@ -30,9 +30,17 @@ let arr = [1, 2, {a:"abc"}].map(item => {
 //     console.log(res)
 // })
 
-Promise.resolve("haha").then(res => {
-    console.log(res)
-})
-console.log("aaaa")
-console.log("aaaa")
-console.log("aaaa")
+// Promise.resolve("haha").then(res => {
+//     console.log(res)
+// })
+// console.log("aaaa")
+// console.log("aaaa")
+// console.log("aaaa")
+
+let obj = {
+    say() {
+        console.log(this === global)
+    }
+}
+
+obj.say.call(null)
