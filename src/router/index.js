@@ -7,6 +7,7 @@ import video from '@/pages/video'
 import nodejs from "@/pages/nodejs.vue"
 import test from "@/pages/test"
 import scrollWraper from "@/pages/scroll"
+import testFixed from "@/pages/testFixed"
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,11 @@ export default new VueRouter({
             path: "/test",
             name: "test",
             component: test
+        },
+        {
+            path: "/testFixed",
+            name: "testFixed",
+            component: testFixed
         },
         {
             path: "/scrollWraper",
