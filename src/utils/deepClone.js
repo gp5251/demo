@@ -37,7 +37,7 @@
 // }
 
 export default function deepClone (obj, parent = {}) {
-    if (typeof obj == "object" || typeof obj == "function") {
+    if ( (typeof obj == "object" || typeof obj == "function") && obj !== null ) {
         let Constructor = obj.constructor
         let cloneObj
         switch (Constructor) {
