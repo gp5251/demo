@@ -8,6 +8,7 @@ import nodejs from "@/pages/nodejs.vue"
 import test from "@/pages/test"
 import scrollWraper from "@/pages/scroll"
 import testFixed from "@/pages/testFixed"
+import requestAnimationFrame from "@/pages/requestAnimationFrame"
 
 Vue.use(VueRouter)
 
@@ -19,7 +20,12 @@ export default new VueRouter({
             component: Jsonp,
             meta: "jsonp"
                 
-	   },
+       },
+       {
+           path: "/requestAnimationFrame",
+           name: "requestAnimationFrame",
+           component: requestAnimationFrame
+       },
 	   {
 	   	 	path: '/axios',
 	   	 	name: 'axios',
