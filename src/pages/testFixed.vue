@@ -22,9 +22,11 @@
         <!-- <fixedTop :styleObj="{height: "50px;"}">
             <div class="title" >contentcontentcontentcontentcontent</div>
         </fixedTop> -->
-        <fixedTop :styleObj="styleObj" :aaaa="'aaaa'">
-            <div class="title" >contentcontentcontentcontentcontent</div>
-        </fixedTop>
+        <div style="position: relative;">
+            <fixedTop :styleObj="styleObj" :aaaa="'aaaa'">
+                <div class="title" >contentcontentcontentcontentcontent</div>
+            </fixedTop>
+        </div>
         <div class="content">
              一个 switch 语句首先会计算其 expression 。然后，它将从第一个 case 子句开始直到寻找到一个其表达式值与所输入的 expression 的值所相等的子句（使用 严格运算符，===）并将控制权转给该子句，执行相关语句。（如果多个 case 与提供的值匹配，则选择匹配的第一个 case，即使这些 case 彼此间并不相等。）如果没有 case 子句相匹配，程序则会寻找那个可选的 default 子句，如果找到了，将控制权交给它，执行相关语句。若没有 default 子句，程序将继续执行直到 switch 结束。按照惯例，default 子句是最后一个子句，不过也不需要这样做。
 

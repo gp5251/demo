@@ -21,7 +21,7 @@ export default {
         }
     },
     mounted () {
-        this.offsetT = this.$refs.fixedTop.offsetTop
+        this.offsetT = this.getOffsetTop ( this.$refs.fixedTop )
         window.addEventListener ("scroll", this.handleScroll)
     },
     methods: {
@@ -32,6 +32,16 @@ export default {
             } else {
                 this.isFixed = false
             }
+        },
+        getOffsetTop (obj) {
+            let top = obj.offsetTop
+            while ( obj.offsetParent ) {
+                obj = obj.offsetParent
+                top += obj.offsetTop
+            }
+
+            return top
+            
         }
     },
     beforeDestroy () {
