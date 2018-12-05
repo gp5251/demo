@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/lijiweigh/demo/issues"
   },
-  "homepage": "https://github.com/lijiweigh/demo#readme"
+  "homepage": "https://github.com/lijiweigh/demo#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
