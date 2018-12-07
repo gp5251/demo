@@ -2,6 +2,7 @@
   <div class="test">
     <button @click="showToast">showToast</button>
     <button @click="showloading">showloading</button>
+    <button @click="close">close</button>
   </div>
 </template>
 
@@ -25,19 +26,28 @@ export default {
   name: "test",
   methods: {
     showToast() {
+        console.log("aaaaaa")
       this.$toast({
         message: "hello"
       });
     },
     showloading() {
+         console.log("bbbbbbb")
       const loading = this.$loading();
       setTimeout(() => {
         loading.close();
         console.log("timeout");
       }, 3000);
+    },
+    close () {
+        CD58RouterPlugin.navigateBack({}, function(){}, function(){});
     }
   },
   mounted() {
+
+   
+        
+        
     // console.log(addParams("www.aaa.com?c=3", {a:2,b:9}))
     // let a = {
     //     a: 3,
