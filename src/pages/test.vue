@@ -46,7 +46,34 @@ export default {
   mounted() {
 
    
-        
+        // window.addEventListener("beforeunload", (e) => {
+        //     console.log("http://localhost:3001/#/evacuation_agreement")
+        //     if (this.sureAgree) {
+        //         // return false
+        //     } else {
+        //         this.singleBtn = true
+        //         this.isShowPopup = true
+        //         e.preventDefault()
+        //         e.returnValue = "aa"
+        //         e.Cancelable = true
+        //         return "false"
+        //     }
+
+            
+        //     // return true
+        // })
+
+        window.addEventListener("backButtonClicked", (e) => {
+            document.body.innerHTML += "aaaaa"
+            alert("aa")
+           return true
+        })
+
+        document.addEventListener("backButtonClicked", (e) => {
+            document.body.innerHTML += "aaaaa"
+            alert("aa")
+           return true
+        })
         
     // console.log(addParams("www.aaa.com?c=3", {a:2,b:9}))
     // let a = {
