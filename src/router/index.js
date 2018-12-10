@@ -9,6 +9,7 @@ import test from "@/pages/test"
 import scrollWraper from "@/pages/scroll"
 import testFixed from "@/pages/testFixed"
 import requestAnimationFrame from "@/pages/requestAnimationFrame"
+import autoHeightInput from "@/pages/autoHeightInput"
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,11 @@ export default new VueRouter({
             path: "/testFixed",
             name: "testFixed",
             component: testFixed
+        },
+        {
+            path: "/autoHeightInput",
+            name: "autoHeightInput",
+            component: autoHeightInput
         },
         {
             path: "/scrollWraper",
