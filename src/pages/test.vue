@@ -3,7 +3,9 @@
     <button @click="showToast">showToast</button>
     <button @click="showloading">showloading</button>
     <button @click="close">close</button>
+    <button @click="go">go</button>
   </div>
+  
 </template>
 
 <script>
@@ -41,6 +43,9 @@ export default {
     },
     close () {
         CD58RouterPlugin.navigateBack({}, function(){}, function(){});
+    },
+    go () {
+        this.$router.push({name: "nodejs", query: {aa: 66, appid: 88}, params: {bb: 33} })
     }
   },
   mounted() {
