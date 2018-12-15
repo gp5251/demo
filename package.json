@@ -18,5 +18,9 @@
   "homepage": "https://github.com/lijiweigh/demo#readme",
   "dependencies": {
     "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "superagent": "^4.0.0"
   }
 }
