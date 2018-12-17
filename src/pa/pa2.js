@@ -26,7 +26,7 @@ async function main () {
 
     for (let index = 1; index <= totalPage; index ++) {
         projectListUrl = "http://git.daojia-inc.com/groups/fe?page=" + index
-        console.log(projectListUrl)
+        
         let data = await request.get(projectListUrl).set("Cookie", cookie1)
         let $ = cheerio.load(data.text)
 
@@ -35,6 +35,20 @@ async function main () {
         })
         
     }
+
+
+    // for (let index = 1; index <= totalPage; index++) {
+    //     promiseArr.push(new Promise(async function (resolve, reject) {
+    //         projectListUrl = "http://git.daojia-inc.com/groups/fe?page=" + index
+    //         let data = await request.get(projectListUrl).set("Cookie", cookie1)
+    //         let $ = cheerio.load(data.text)
+    //         let lastTime = "1999-10-12T06:00:33Z"
+    //         $(".project-name").each ((index, elem) => {
+                
+    //             allProject.push({time: "", name: $(elem).html().replace(/\s|\n/g, "")})
+    //         })
+    //     }))
+    // }
 
     ws.end(JSON.stringify(allProject))
 
@@ -65,7 +79,11 @@ async function main () {
         ws2.write("<br/>--------------------------------------------------------------------------------------------------------")
     }
 
-    ws2.end()
+        
+
+    
+
+    
     
 }
 
