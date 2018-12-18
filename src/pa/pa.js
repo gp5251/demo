@@ -56,11 +56,15 @@ async function main () {
         ws2.write("<h1>project name : ---------------------------------------" + allProject[i] + "-----------------------------------------</h1>")
         
         // console.log($(".file-content").html())
-        if ( $(".file-content").html() ) {
+        if ($(".commit-author-name").html()) {
             ws2.write("<h2>last commit  " + $(".time_ago").attr("datetime") + "  by  " + $(".commit-author-name").html().replace(/\s|\n/g, "") + "</h2>")
-            ws2.write($(".file-content").html())
+            if ( $(".file-content").html() ) {
+                ws2.write($(".file-content").html())
+            } else {
+                ws2.write("<h2>------------------------------没有 readme 文件-------------------------</h2>")
+            }
         } else {
-            ws2.write("<br/>--------------null")
+            ws2.write("<h2>--------------------------空项目----------------------------</h2>")
         }
         ws2.write("<br/>--------------------------------------------------------------------------------------------------------")
     }
