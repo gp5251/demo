@@ -80,7 +80,15 @@
         </a>
       </li>
     </ul>
+
+    <div class="btnRouter" @click="btnRouter">
+        btnRouter
+    </div>
+    <div class="btnRouter" @click="goback">
+        goback
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -88,8 +96,21 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      id: 1
     }
+  },
+  methods: {
+      btnRouter () {
+          this.$router.push({name: "blank"})
+      },
+      goback () {
+          this.$router.go(-2)
+      }
+  },
+  beforeRouteLeave (to, from, next) {
+    //   alert("确定要离开吗")
+      next()
   }
 }
 </script>
