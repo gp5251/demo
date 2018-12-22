@@ -1,4 +1,4 @@
-export default function setRem (baseFont = 75, clientWidth = 750) {
+export default function setRem (baseFont = 50, clientWidth = 750) {
 
     const docEl = document.documentElement
     const resizeEvent = "orientationchange" in window ? "orientationchange" : "resize"
@@ -13,3 +13,5 @@ export default function setRem (baseFont = 75, clientWidth = 750) {
     window.addEventListener(resizeEvent, resizeCallback, false)
     document.addEventListener("DOMContentLoaded", resizeCallback, false)
 }
+
+setRem()

@@ -10,6 +10,7 @@ import scrollWraper from "@/pages/scroll"
 import testFixed from "@/pages/testFixed"
 import requestAnimationFrame from "@/pages/requestAnimationFrame"
 import autoHeightInput from "@/pages/autoHeightInput"
+import lazyImg from "@/pages/lazyImg"
 
 Vue.use(VueRouter)
 
@@ -61,6 +62,11 @@ const router = new VueRouter({
               path: "/scrollWraper",
               name: "scrollWraper",
               component: scrollWraper
+          },
+          {
+              path: "/lazyImg",
+              name: "lazyImg",
+              component: lazyImg
           }
     ]
     
