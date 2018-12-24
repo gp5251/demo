@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.lazyImg {}
+
 .img {
     width: 10rem;
     height: 10rem;
