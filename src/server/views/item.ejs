@@ -1,0 +1,15 @@
+<div style="border: 1px solid pink; margin-bottom: 50px;">
+    <div class= "productId">productId: <%= goodsObj.productId %></div>
+
+    <% if (goodsObj.productImageSmall) { %>
+        <% for(let j = 0; j < goodsObj.productImageSmall.length; j++) { %>
+            <img src="<%= goodsObj.productImageSmall[j] %>" style="width: 200px;height: 200px;" alt=""/>
+        <% }%>
+    <% } %>
+
+    <div class= "salePrice">salePrice: <%= goodsObj.salePrice %></div>
+
+    <div class= "productName">productName: <%= goodsObj.productName %></div>
+
+    <div class= "sub_title">sub_title: <%= goodsObj.sub_title %></div>
+</div>

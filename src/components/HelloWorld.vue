@@ -87,20 +87,47 @@
     <div class="btnRouter" @click="goback">
         goback
     </div>
+
+    <input type="text" v-model="get" placeholder="get" @click="handleget">
+    <input type="text" v-model="post" placeholder="post" @click="handlepost">
+    <input type="text" v-model="put" placeholder="put" @click="handleput">
+    <input type="text" v-model="handledelete" placeholder="delete" @click="handledelete2">
+    <input type="text" v-model="head" placeholder="head" @click="handlehead">
   </div>
 
 </template>
 
 <script>
+import axios from "axios"
 export default {
   name: 'HelloWorld',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      id: 1
+      id: 1,
+      get: "",
+      post: "",
+      put: "",
+      handledelete: "",
+      head: ""
     }
   },
   methods: {
+      handleget () {
+          axios.get("https://baidu.com")
+      },
+      handlepost () {
+          axios.post(this.post, {abc: 22})
+      },
+      handleput () {
+          axios.put(this.put)
+      },
+      handledelete2 () {
+          axios.delete(this.handledelete)
+      },
+      handlehead () {
+          axios.head(this.head)
+      },
       btnRouter () {
           this.$router.push({name: "blank"})
       },
