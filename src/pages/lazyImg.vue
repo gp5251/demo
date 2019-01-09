@@ -1,7 +1,7 @@
 <template>
     <div class="lazyImg" ref="lazyImg">
 
-        <img class="img" :src="defaultSrc" alt="" :data-src="src" v-for="(src, index) in imgList" :key="index" ref="imgs">
+        <img class="img" src="../assets/logo.png" alt="" :data-src="src" v-for="(src, index) in imgList" :key="index" ref="imgs">
     </div>
 </template>
 
@@ -10,7 +10,7 @@ export default {
     name: "lazyImg",
     data() {
         return {
-            defaultSrc: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545538035116&di=689f08c16c2e4df2faff57fd193fae9d&imgtype=0&src=http%3A%2F%2Ftx.haiqq.com%2Fuploads%2Fallimg%2F170507%2F0H1232460-0.jpg",
+            defaultSrc: "",
             imgList:[
                 "http://img2.imgtn.bdimg.com/it/u=764856423,3994964277&fm=26&gp=0.jpg",
                 "http://img17.3lian.com/d/file/201703/13/4758dd3347da01d7e082825fa8b0b0cc.jpg",
@@ -26,6 +26,7 @@ export default {
                 "http://www.ctps.cn/PhotoNet/Profiles2011/20160311/20163111610178319.jpg",
                 "http://image.biaobaiju.com/uploads/20180803/21/1533302926-DlFZTdtQGb.jpg",
             ],
+            // imgList: ["aa","aa","aa","aa","aa","aa","aa","aa"],
             curImg: 0
         }
     },
@@ -35,14 +36,18 @@ export default {
         const _this = this
         let lazy = this.lazyLoad()
         // lazy()
-        window.addEventListener( "scroll", this.throttle(lazy, 500, 1000), false )
+        window.addEventListener( "scroll", this.throttle(lazy, 200, 1000), false )
         // this.$nextTick(lazy)
         // setTimeout(lazy, 3000);
         // window.onload = lazy
         let img = new Image()
         img.onload = lazy
-        img.src = this.defaultSrc
+        img.src = this.imgList[0]
         // this.$refs.lazyImg.onload = lazy
+
+        // window.onload = function () {
+        //     console.log()
+        // }
     },
 
     methods: {
@@ -75,9 +80,9 @@ export default {
                 for ( let i = curImg; i < len; i++ ) {
                     if (allImg[i].offsetTop < clientHeight + scrollTop) {
                         console.log("allImg[" + i + "].offsetTop " + allImg[i].offsetTop)
-                        if (allImg[i].getAttribute("src") == _this.defaultSrc) {
+                        // if (allImg[i].getAttribute("src") == _this.defaultSrc) {
                             allImg[i].src = allImg[i].getAttribute("data-src")
-                        }
+                        // }
                         curImg += 1
                     }
                 }
@@ -94,5 +99,6 @@ export default {
     width: 10rem;
     height: 10rem;
     margin: 20px auto;
+   
 }
 </style>
