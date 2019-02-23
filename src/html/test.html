@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        body {
+            height: 10000px;
+        }
+    </style>
+    <title>Document</title>
+    <script src="../js/防抖.js"></script>
+    <script src="../js/节流.js"></script>
+</head>
+<body>
+
+
+
+    <script>
+        
+        let d = debounce (function () {
+            console.log("aaaaa")
+        })
+
+        document.documentElement.addEventListener("mousemove", d)
+
+        let t = throttle (function () { console.log("ttttttttt") })
+        window.addEventListener("scroll", t)
+        
+    </script>
+</body>
+</html>
