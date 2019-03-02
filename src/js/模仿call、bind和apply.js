@@ -23,7 +23,7 @@ Function.prototype.myApply = function (context) {
     if (arguments[1]) {
         result = caller.fn (...arguments[1])
     } else {
-        result = call.fn()
+        result = caller.fn()
     }
 
     delete caller.fn
