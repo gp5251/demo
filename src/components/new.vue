@@ -1,12 +1,13 @@
 <template>
     <div class="blank">
-        blankblankblank
+        new newnew
+        <button @click="back">back</button>
     </div>
 </template>
 
 <script>
 export default {
-    name: "blank",
+    name: "newone",
     // beforeRouteEnter (to, from, next) {
     //     // if (from.name == "HelloWorldId") {
     //     //     next ({name: "HelloWorldId"})
@@ -28,8 +29,13 @@ export default {
     //     next()
     // },
     created() {
-        console.log("blank")
-        this.$router.push({name: "mid"})
+        console.log("new")
+        
+    },
+    methods: {
+        back () {
+            this.$router.back()
+        }
     }
 
 }

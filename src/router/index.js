@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import blank from '@/components/blank'
+import newone from '@/components/new'
+import mid from '@/components/mid'
 
 Vue.use(Router)
 
@@ -13,21 +15,26 @@ const router = new Router({
         component: HelloWorld
       },
       {
-          path: '/helloworldid',
-          name: 'HelloWorldId',
-          component: HelloWorld
+          path: '/newone',
+          name: 'newone',
+          component: newone
       }, 
       {
           path: "/blank",
           name: "blank",
           component: blank
+      }, 
+      {
+          path: "/mid",
+          name: "mid",
+          component: mid
       }
     ]
   })
 
   router.beforeEach( function (to, from, next) {
-      if (to.name == "blank" && from.name == "HelloWorldId") {
-        router.go(-1)
+      if (to.name == "mid" && from.name == "newone") {
+        router.go(-2)
         next(false)
       } else {
           next()

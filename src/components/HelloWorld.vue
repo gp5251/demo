@@ -138,6 +138,9 @@ export default {
   beforeRouteLeave (to, from, next) {
     //   alert("确定要离开吗")
       next()
+  },
+  mounted () {
+      console.log("hello")
   }
 }
 </script>
