@@ -133,14 +133,34 @@ export default {
       },
       goback () {
           this.$router.go(-2)
+      },
+      myconsole() {
+          console.log("myconsole")
       }
   },
   beforeRouteLeave (to, from, next) {
     //   alert("确定要离开吗")
       next()
   },
+  beforeCreate() {
+      console.log("beforeCreate-----" + this.msg)
+      this.myconsole()
+      console.log(this.$el)
+  },
+  created() {
+      console.log("created-----" + this.msg)
+      this.myconsole()
+      console.log(this.$el)
+  },
+  beforeMount() {
+      console.log("beforeMount-----" + this.msg)
+      this.myconsole()
+      console.log(this.$el)
+  },
   mounted () {
-      console.log("hello")
+      console.log("mounted------" + this.msg)
+      this.myconsole()
+      console.log(this.$el)
   }
 }
 </script>
