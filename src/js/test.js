@@ -15,3 +15,5 @@ let b = {
 }
 
 a.fn.myfn (b)
+
+let reg = /[^\w.$]/
