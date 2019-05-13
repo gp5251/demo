@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import blank from '@/components/blank'
 import newone from '@/components/new'
 import mid from '@/components/mid'
+import diaocha from '@/components/diaocha'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ const router = new Router({
           path: "/mid",
           name: "mid",
           component: mid
+      },
+      {
+          path: "/diaocha",
+          name: "diaocha",
+          component: diaocha
       }
     ]
   })
